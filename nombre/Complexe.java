@@ -1,6 +1,6 @@
 package nombre;
 
-public class Complexe<Re extends Number, Im extends Number> 
+public class Complexe<Re, Im> 
 {
     private Re re;
     private Im im;
@@ -21,8 +21,8 @@ public class Complexe<Re extends Number, Im extends Number>
         return im;
     }
 
-    public void show() 
+    public String toString() 
     {
-        System.out.println(re + " + " + im + "i");
+        return (re + " + (" + im + ")i");
     }
 }

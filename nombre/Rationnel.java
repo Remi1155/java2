@@ -25,8 +25,8 @@ public class Rationnel
         return den;
     }
 
-    public void show() 
+    public String toString() 
     {
-        System.out.println(num + "/" + den);
+        return (num + "/" + den);
     }
 }

@@ -8,26 +8,22 @@ import operation_algebrique.Calcul;
 public class Main {
     public static void main(String[] args) {
         Complexe<Integer, Integer> c1 = new Complexe<>(3, 4);
-        Complexe<Float, Integer> c2 = new Complexe<>(1.5f, 2);;
-        Complexe<?, ?> sumC1andC2= Arithmetique.add2Complexe(c1, c2);
-        System.out.print("On a c1 = ");
-        c1.show();
-        System.out.print("et c2 = ");
-        c2.show();
-        System.out.print("Alors c1 + c2 = ");
-        sumC1andC2.show();
+        Complexe<Double, Integer> c2 = new Complexe<>(2.5, 1);
+        Complexe<Rationnel, Rationnel> c3 = new Complexe<>(new Rationnel(1, 2), new Rationnel(3, 4));
+
+        System.out.println(Arithmetique.add2Complexe(c1, c2)); // 5.5 + 5.5i
+        System.out.println(Arithmetique.add2Complexe(c3, c3));
+        // System.out.print("On a c1 = " + c1);
+        // System.out.print("et c2 = " + c2);
 
         System.out.println();
 
         Rationnel r1 = new Rationnel(1, 2);
         Rationnel r2 = new Rationnel(3, 1);
-        Rationnel r3 = Arithmetique.add2rationnels(r1, r2);
-        System.out.print("On a r1 = ");
-        r1.show();
-        System.out.print("et r2 = ");
-        r2.show();
-        System.out.print("Alors r1 + r2 = ");
-        r3.show();
+        Rationnel sumR1andR2 = Arithmetique.add2rationnels(r1, r2);
+        System.out.print("On a r1 = " + r1);
+        System.out.print("et r2 = " + r2);
+        System.out.print("Alors r1 + r2 = " + sumR1andR2);
 
         System.out.println();
 
