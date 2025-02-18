@@ -1,27 +1,34 @@
 package algebre;
 
+import nombre.Complexe;
+import nombre.Rationnel;
+
 public class Matrice 
 {
-    private double[][] elements;
+    private Object[][] elements;
     private int lignes;
     private int colonnes;
 
-    public Matrice(double[][] elements) 
+    public Matrice(Object[][] elements) 
     {
         this.lignes = elements.length;
         this.colonnes = elements[0].length;
-        this.elements = new double[lignes][colonnes];
+        this.elements = new Object[lignes][colonnes];
 
         for (int i = 0; i < lignes; i++) 
         {
             for (int j = 0; j < colonnes; j++) 
             {
+                if (!(elements[i][j] instanceof Number || elements[i][j] instanceof Rationnel || elements[i][j] instanceof Complexe)) 
+                {
+                    throw new IllegalArgumentException("Les éléments doivent être de type Number, Rationnel ou Complexe");
+                }
                 this.elements[i][j] = elements[i][j];
             }
         }
     }
 
-    public double[][] getElements() 
+    public Object[][] getElements() 
     {
         return elements;
     }
@@ -36,18 +43,18 @@ public class Matrice
         return colonnes;
     }
 
-    public void show() 
+    public String toString() 
     {
-        int i = 0;
-        int j = 0;
-        for (i = 0; i < lignes; i++) 
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < lignes; i++) 
         {
-            System.out.print("(");
-            for (j = 0; j < colonnes; j++) 
+            sb.append("(");
+            for (int j = 0; j < colonnes; j++) 
             {
-                System.out.print(elements[i][j] + "  ");
+                sb.append(elements[i][j]).append("  ");
             }
-            System.out.println(")");
+            sb.append(")\n");
         }
+        return sb.toString();
     }
 }

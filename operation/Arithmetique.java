@@ -3,87 +3,56 @@ package operation;
 import nombre.Complexe;
 import nombre.Rationnel;
 
-public class Arithmetique {
-    public static Rationnel add2rationnels(Rationnel r1, Rationnel r2) 
-    {
-        int num = r1.getNum() * r2.getDen() + r2.getNum() * r1.getDen();
-        int den = r1.getDen() * r2.getDen();
-        return new Rationnel(num, den);
-    }
-
-    public static <Re1, Im1, Re2, Im2> 
-    Complexe<?, ?> add2Complexe(Complexe<Re1, Im1> c1, Complexe<Re2, Im2> c2) 
-    {
-        Object re = sum(c1.getRe(), c2.getRe());
-        Object im = sum(c1.getIm(), c2.getIm());
-
-        return new Complexe<>(re, im);
-    }
-
-    public static Complexe<?, ?> addComplexeAndRationnel(Complexe<?, ?> c, Rationnel r) 
-    {
-        Object re = sum(c.getRe(), r);
-        Object im = c.getIm();
-
-        return new Complexe<>(re, im);
-    }
-
-    public static Complexe<?, ?> addRationnelAndComplexe(Rationnel r, Complexe<?, ?> c) 
-    {
-        Object re = sum(r, c.getRe());
-        Object im = c.getIm();
-
-        return new Complexe<>(re, im);
-    }
-
-    public static Complexe<?, ?> addComplexeAndNumber(Complexe<?, ?> c, Number n) 
-    {
-        Object re = sum(c.getRe(), n);
-        Object im = c.getIm();
-
-        return new Complexe<>(re, im);
-    }
-
+public class Arithmetique 
+{
     
-
-    private static Object sum(Object a, Object b) 
+    public static Object sum(Object a, Object b) 
     {
         if (a instanceof Rationnel && b instanceof Rationnel) 
         {
-            return add2rationnels((Rationnel) a, (Rationnel) b);
+            return addRationnels((Rationnel) a, (Rationnel) b);
         } 
-        else if (a instanceof Integer && b instanceof Rationnel) 
+        else if (a instanceof Rationnel && b instanceof Number) 
         {
-            return add2rationnels(new Rationnel((Integer) a, 1), (Rationnel) b);
-        }
-        else if (a instanceof Rationnel && b instanceof Integer) 
+            return addRationnels((Rationnel) a, new Rationnel(((Number) b).intValue(), 1));
+        } 
+        else if (a instanceof Number && b instanceof Rationnel) 
         {
-            return add2rationnels((Rationnel) a, new Rationnel((Integer) b, 1));
-        }
-        else if (a instanceof Double && b instanceof Rationnel)
-        {
-            return add2rationnels(new Rationnel((int) ((Double) a).doubleValue(), 1), (Rationnel) b);
-        }
-        else if (a instanceof Rationnel && b instanceof Double)
-        {
-            return add2rationnels((Rationnel) a, new Rationnel((int) ((Double) b).doubleValue(), 1));
-        }
-        else if (a instanceof Float && b instanceof Rationnel)
-        {
-            return add2rationnels(new Rationnel((int) ((Float) a).floatValue(), 1), (Rationnel) b);
-        }
-        else if (a instanceof Rationnel && b instanceof Float)
-        {
-            return add2rationnels((Rationnel) a, new Rationnel((int) ((Float) b).floatValue(), 1));     
-        }
+            return addRationnels(new Rationnel(((Number) a).intValue(), 1), (Rationnel) b);
+        } 
         else if (a instanceof Number && b instanceof Number) 
         {
             return sumNumbers((Number) a, (Number) b);
         } 
-        else 
+        else if (a instanceof Complexe && b instanceof Complexe) 
         {
-            throw new IllegalArgumentException("Types non pris en charge pour l'addition");
-        }
+            return addComplexes((Complexe<?, ?>) a, (Complexe<?, ?>) b);
+        } 
+        else if (a instanceof Complexe && b instanceof Number) 
+        {
+            return addComplexAndNumber((Complexe<?, ?>) a, (Number) b);
+        } 
+        else if (a instanceof Number && b instanceof Complexe) 
+        {
+            return addComplexAndNumber((Complexe<?, ?>) b, (Number) a);
+        } 
+       
+        else if (a instanceof Complexe && b instanceof Rationnel) 
+        {
+            return addComplexAndRationnel((Complexe<?, ?>) a, (Rationnel) b);
+        } 
+        else if (a instanceof Rationnel && b instanceof Complexe) 
+        {
+            return addComplexAndRationnel((Complexe<?, ?>) b, (Rationnel) a);
+        } 
+        throw new IllegalArgumentException("Types non pris en charge pour l'addition");
+    }
+
+    private static Rationnel addRationnels(Rationnel r1, Rationnel r2) 
+    {
+        int num = r1.getNum() * r2.getDen() + r2.getNum() * r1.getDen();
+        int den = r1.getDen() * r2.getDen();
+        return new Rationnel(num, den);
     }
 
     private static Number sumNumbers(Number a, Number b) 
@@ -95,7 +64,7 @@ public class Arithmetique {
         else if (a instanceof Long && b instanceof Long) 
         {
             return a.longValue() + b.longValue();
-        } 
+        }
         else if (a instanceof Float && b instanceof Float) 
         {
             return a.floatValue() + b.floatValue();
@@ -106,10 +75,22 @@ public class Arithmetique {
         }
     }
 
-    // public static Irationnel add2Irationnels(Irationnel i1, Irationnel i2)
-    // {
-    // double irrational = i1.getIrrational() + i2.getIrrational();
-    // return new Irationnel(irrational);
-    // }
+    private static Complexe<?, ?> addComplexes(Complexe<?, ?> c1, Complexe<?, ?> c2) 
+    {
+        Object re = sum(c1.getRe(), c2.getRe());
+        Object im = sum(c1.getIm(), c2.getIm());
+        return new Complexe<>(re, im);
+    }
 
+    private static Complexe<?, ?> addComplexAndNumber(Complexe<?, ?> c, Number n) 
+    {
+        Object re = sum(c.getRe(), n);
+        return new Complexe<>(re, c.getIm());
+    }
+
+    private static Complexe<?, ?> addComplexAndRationnel(Complexe<?, ?> c, Rationnel r) 
+    {
+        Object re = sum(c.getRe(), r);
+        return new Complexe<>(re, c.getIm());
+    }
 }
